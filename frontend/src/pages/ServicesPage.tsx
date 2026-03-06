@@ -72,7 +72,7 @@ export default function ServicesPage() {
     }
   ];
 
-  function ServiceDetail({ service, index }) {
+  function ServiceDetail({ service, index }: { service: { title: string, image: string, description: string, points: string[], badge?: string }, index: number }) {
 
     const isReverse = index % 2 === 1;
     const bgClass = index % 2 === 0 ? "bg-white" : "bg-[#f3f6fc]";
@@ -107,7 +107,7 @@ export default function ServicesPage() {
               </p>
 
               <ul className="space-y-3 mb-6">
-                {service.points.map((point, i) => (
+                {service.points.map((point: string, i: number) => (
                   <li key={i} className="flex items-start gap-3 text-gray-700 text-sm">
                     <div className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mt-1">
                       ✓
