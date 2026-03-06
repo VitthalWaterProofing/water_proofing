@@ -13,7 +13,7 @@ import {
   Home,
   Building2,
   Search, Stethoscope, CheckCircle, PaintBucket,
-  Award, Users, Package, MapPin
+  Award, Users, Package, MapPin, Check
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 
@@ -110,7 +110,7 @@ export default function ServicesPage() {
                 {service.points.map((point: string, i: number) => (
                   <li key={i} className="flex items-start gap-3 text-gray-700 text-sm">
                     <div className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mt-1">
-                      ✓
+                      <Check size={14} />
                     </div>
                     {point}
                   </li>
@@ -197,7 +197,7 @@ export default function ServicesPage() {
 
         {/* ================= SERVICES SECTION ================= */}
         <section className="bg-[#f3f4f5] py-20">
-          <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-[1400px] mx-auto px-6">
 
             {/* Top Label */}
             <p className="text-center text-blue-500 text-xs font-semibold tracking-widest mb-4">
@@ -213,49 +213,97 @@ export default function ServicesPage() {
             </h2>
 
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
               {/* Card */}
               {[
                 {
                   icon: <Layers size={16} />,
                   title: "Brickbat Coba Waterproofing",
-                  desc: "Traditional & durable terrace waterproofing using brick pieces and waterproof mortar for long-lasting protection."
+                  desc: "Traditional & durable terrace waterproofing using brick pieces and waterproof mortar for long-lasting protection.",
+                  features: [
+                    "Long-lasting protection for 15+ years",
+                    "Excellent crack resistance",
+                    "Natural heat insulation",
+                    "Cost-effective traditional method"
+                  ]
                 },
                 {
                   icon: <Grid size={16} />,
                   title: "China Mosaic Treatment",
-                  desc: "Decorative waterproofing with broken ceramic tiles providing both aesthetics and thermal insulation."
+                  desc: "Decorative waterproofing with broken ceramic tiles providing both aesthetics and thermal insulation.",
+                  features: [
+                    "Beautiful decorative finish",
+                    "Superior heat reflection",
+                    "Waterproof and weatherproof",
+                    "Low maintenance solution"
+                  ]
                 },
                 {
                   icon: <Paintbrush size={16} />,
                   title: "Khoba Waterproofing",
-                  desc: "Specialized cement-polymer coating system for terraces, ensuring crack-resistant protection."
+                  desc: "Specialized cement-polymer coating system for terraces, ensuring crack-resistant protection.",
+                  features: [
+                    "Complete seepage prevention",
+                    "Mold and fungus protection",
+                    "Non-toxic, safe materials",
+                    "10-year warranty coverage"
+                  ]
                 },
                 {
                   icon: <Droplets size={16} />,
                   title: "Terrace Leakage Repair",
-                  desc: "Expert diagnosis and repair of terrace leaks using advanced sealants and waterproof membranes."
+                  desc: "Expert diagnosis and repair of terrace leaks using advanced sealants and waterproof membranes.",
+                  features: [
+                    "Permanent dampness elimination",
+                    "Injection grouting technology",
+                    "Paint-ready surface finish",
+                    "Health-safe environment"
+                  ]
                 },
                 {
                   icon: <Bath size={16} />,
                   title: "Bathroom Waterproofing",
-                  desc: "Complete bathroom waterproofing solutions preventing seepage to walls and lower floors."
+                  desc: "Complete bathroom waterproofing solutions preventing seepage to walls and lower floors.",
+                  features: [
+                    "Complete seepage prevention",
+                    "Mold and fungus protection",
+                    "Non-toxic, safe materials",
+                    "10-year warranty coverage"
+                  ]
                 },
                 {
                   icon: <Box size={16} />,
                   title: "Water Tank Waterproofing",
-                  desc: "Food-grade safe waterproofing for overhead and underground water tanks with guaranteed results."
+                  desc: "Food-grade safe waterproofing for overhead and underground water tanks with guaranteed results.",
+                  features: [
+                    "Complete seepage prevention",
+                    "Mold and fungus protection",
+                    "Non-toxic, safe materials",
+                    "10-year warranty coverage"
+                  ]
                 },
                 {
                   icon: <Home size={16} />,
                   title: "Wall Dampness Treatment",
-                  desc: "Eliminate wall dampness and seepage with injection grouting and surface treatment methods."
+                  desc: "Eliminate wall dampness and seepage with injection grouting and surface treatment methods.",
+                  features: [
+                    "Permanent dampness elimination",
+                    "Injection grouting technology",
+                    "Paint-ready surface finish",
+                    "Health-safe environment"
+                  ]
                 },
                 {
                   icon: <Building2 size={16} />,
                   title: "New Construction Waterproofing",
-                  desc: "Preventive waterproofing during construction phase for long-term structural protection."
+                  desc: "Preventive waterproofing during construction phase for long-term structural protection.",
+                  features: [
+                    "Permanent dampness elimination",
+                    "Injection grouting technology",
+                    "Paint-ready surface finish",
+                    "Health-safe environment"
+                  ]
                 }
               ].map((service, index) => (
                 <div
@@ -270,13 +318,23 @@ export default function ServicesPage() {
                     {service.title}
                   </h3>
 
-                  <p className="text-sm text-gray-600 mb-4">
+                  <p className="text-sm text-gray-600 leading-relaxed mb-5">
                     {service.desc}
                   </p>
 
-                  <button className="text-blue-600 text-sm font-medium hover:underline">
-                    Learn More →
-                  </button>
+                  {/* Features */}
+                  <ul className="space-y-2 mb-4">
+                    {service.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-gray-600 leading-relaxed">
+
+                        <span
+                          className="bg-blue-100 text-blue-600 p-1 rounded-full mt-0.5 "><Check size={14} /></span>
+
+                        {feature}
+
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
 
