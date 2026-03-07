@@ -17,7 +17,7 @@ export default function Hero() {
       />
 
       {/* Gradient Overlay */}
-     <div className="absolute inset-0 bg-gradient-to-r from-[#0b254f]/95 via-[#1e3a6d]/80 to-[#1e3a6d]/50" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0b254f]/95 via-[#1e3a6d]/80 to-[#1e3a6d]/50" />
       {/* Content */}
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-12 py-20">
         <div className="max-w-3xl">
@@ -45,14 +45,18 @@ export default function Hero() {
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="flex items-center justify-center gap-2 bg-[#1443a8] hover:bg-[#1d4ed8] px-6 py-3 rounded-lg font-semibold transition">
-              <Phone size={16} /> Get Free Inspection
-            </button>
+            <a href="tel:+9867233817" className="w-full sm:w-auto">
+              <button className="flex items-center justify-center gap-2 bg-[#1443a8] hover:bg-[#1d4ed8] px-6 py-3 rounded-lg font-semibold transition">
+                <Phone size={16} /> Get Free Inspection
+              </button>
+            </a>
 
-            <button className="flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1e3a6d] transition">
-              <FaWhatsapp size={18} />  
-              WhatsApp Now
-            </button>
+            <a href="https://wa.me/9867233817" className="w-full sm:w-auto">
+              <button className="flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1e3a6d] transition">
+                <FaWhatsapp size={18} />
+                WhatsApp Now
+              </button>
+            </a>
           </div>
         </div>
       </div>

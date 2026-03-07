@@ -155,25 +155,33 @@ export default function ServicesPage() {
                   <ShieldCheck className="mr-2 shrink-0" size={16} />
                   10+ Years of Waterproofing Expertise
                 </div>
+
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-5">
                   Professional<br />
                   Waterproofing<br />
                   Services in<br />
                   <span className="text-blue-400">Bangalore</span>
                 </h1>
+
                 <p className="text-gray-300 mb-8 text-base">
                   Durable, long-lasting, and cost-effective waterproofing<br className="hidden md:block" />
                   solutions for residential and commercial properties.
                 </p>
+
                 <div className="flex flex-wrap gap-4 sm:flex-row">
-                  <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
+                <a href="tel:+9867233817" className="w-full sm:w-auto">
+                  <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
                     <Phone size={17} />
                     Get Free Inspection
                   </button>
-                  <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/40 hover:border-white px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
+                  </a>
+
+                  <a href="https://wa.me/9867233817" className="w-full sm:w-auto">
+                  <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/40 hover:border-white px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
                     <FaWhatsapp size={18} />
                     WhatsApp Now
                   </button>
+                  </a>
                 </div>
               </div>
 
