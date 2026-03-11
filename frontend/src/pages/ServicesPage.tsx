@@ -1,4 +1,5 @@
-
+import { useState } from "react";
+import InspectionModal from "../components/InspectionModal"
 import Footer from "../components/layout/Footer";
 import LeakageCTA from "../components/sections/LeakageCTA";
 import {
@@ -16,9 +17,12 @@ import {
   Award, Users, Package, MapPin, Check
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import FloatingActions from "../components/FloatingActions";
 
 
 export default function ServicesPage() {
+
+  const [isInspectionOpen, setIsInspectionOpen] = useState(false);
 
   const detailedServices = [
     {
@@ -72,7 +76,21 @@ export default function ServicesPage() {
     }
   ];
 
-  function ServiceDetail({ service, index }: { service: { title: string, image: string, description: string, points: string[], badge?: string }, index: number }) {
+  function ServiceDetail({
+    service,
+    index,
+    openInspection
+  }:
+    { service: { 
+      title: string, 
+      image: string, 
+      description: string, 
+      points: string[], 
+      badge?: string 
+    }, 
+      index: number ,
+      openInspection: () => void
+    }) {
 
     const isReverse = index % 2 === 1;
     const bgClass = index % 2 === 0 ? "bg-white" : "bg-[#f3f6fc]";
@@ -126,7 +144,9 @@ export default function ServicesPage() {
                   </div>
                 )}
 
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full text-sm font-medium transition">
+                <button
+                  onClick={openInspection}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full text-sm font-medium transition">
                   Book Inspection
                 </button>
 
@@ -169,18 +189,18 @@ export default function ServicesPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-4 sm:flex-row">
-                <a href="tel:+9867233817" className="w-full sm:w-auto">
-                  <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
-                    <Phone size={17} />
-                    Get Free Inspection
-                  </button>
+                  <a href="tel:+9867233817" className="w-full sm:w-auto">
+                    <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
+                      <Phone size={17} />
+                      Get Free Inspection
+                    </button>
                   </a>
 
                   <a href="https://wa.me/9867233817" className="w-full sm:w-auto">
-                  <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/40 hover:border-white px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
-                    <FaWhatsapp size={18} />
-                    WhatsApp Now
-                  </button>
+                    <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/40 hover:border-white px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
+                      <FaWhatsapp size={18} />
+                      WhatsApp Now
+                    </button>
                   </a>
                 </div>
               </div>
@@ -359,6 +379,7 @@ export default function ServicesPage() {
             key={index}
             service={service}
             index={index}
+            openInspection={() => setIsInspectionOpen(true)}
           />
         ))}
 
@@ -571,6 +592,11 @@ export default function ServicesPage() {
       </main>
       <LeakageCTA />
       <Footer />
+      <InspectionModal
+        open={isInspectionOpen}
+        onClose={() => setIsInspectionOpen(false)}
+      />
+      <FloatingActions hide={isInspectionOpen} />
     </>
   );
 }

@@ -2,7 +2,13 @@
 import { FaWhatsapp } from "react-icons/fa";
 import { Phone } from "lucide-react";
 
-export default function FloatingActions() {
+type Props = {
+  hide?: boolean;
+};
+
+export default function FloatingActions({ hide }: Props) {
+  if (hide) return null;
+
   return (
     <>
       {/* Phone - Mobile Only (Left Side) */}
