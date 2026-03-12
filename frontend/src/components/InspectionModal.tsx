@@ -166,7 +166,11 @@ Details: ${details}`;
               <option>Terrace Leakage</option>
               <option>Bathroom Leakage</option>
               <option>Wall Dampness</option>
-              <option>Water Tank Issue</option>
+              <option>Water Tank Leakage</option>
+              <option>Roof Crack Repair</option>
+              <option>New Construction Waterproofing</option>
+              <option>Other</option>
+
             </select>
           </div>
 

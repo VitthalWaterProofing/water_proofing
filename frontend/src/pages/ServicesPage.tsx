@@ -96,12 +96,12 @@ export default function ServicesPage() {
     const bgClass = index % 2 === 0 ? "bg-white" : "bg-[#f3f6fc]";
 
     return (
-      <section className={`${bgClass} py-20`}>
+      <section className={`${bgClass} py-12 md:py-20`}>
         <div className="max-w-6xl mx-auto px-6">
 
           <div
             className={`flex flex-col ${isReverse ? "md:flex-row-reverse" : "md:flex-row"
-              } items-center gap-16`}
+              } items-center gap-10 md:gap-16`}
           >
 
             {/* IMAGE */}
