@@ -1,7 +1,54 @@
 import Container from "../layout/Container";
 import { MapPin, Phone, Clock, Send } from "lucide-react";
+import { useState } from "react";
 
 export default function Contact() {
+
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [location, setLocation] = useState("");
+  const [problem, setProblem] = useState("");
+
+  const handleSubmit = () => {
+
+    //if all fields are empty
+    if(!name.trim() && !phone.trim() && !location.trim() && (!problem || problem === "Select Problem Type") ){
+      alert("Enter details");
+      return;
+    }
+    if (!name.trim()) {
+      alert("Name is required");
+      return;
+    }
+    if (!phone.trim()) {
+      alert("Phone number is required");
+      return;
+    }
+    if (phone.length !== 10) {
+      alert("Mobile number must be 10 digits");
+      return;
+    }
+
+    if (!location.trim()) {
+      alert("Location is required");
+      return;
+    }
+
+    if (!problem || problem === "Select Problem Type") {
+      alert("Please select problem type");
+      return;
+    }
+
+    const message = `New Enquiry: 
+    Name: ${name}
+    Phone: ${phone}
+    Location: ${location}
+    Problem: ${problem}`;
+
+    const whatsappUrl = `https://wa.me/919867233817?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  }
+
   return (
     <section id="contact" className="bg-white py-20">
       <Container>
@@ -24,22 +71,36 @@ export default function Contact() {
             <input
               type="text"
               placeholder="Your Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <input
-              type="text"
+              type="tel"
               placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, ""); // remove non-numbers
+                if (value.length <= 10) {
+                  setPhone(value);
+                }
+              }}
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <input
               type="text"
               placeholder="Your Location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <select
+              value={problem}
+              onChange={(e) => setProblem(e.target.value)}
+
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option>Select Problem Type</option>
@@ -49,11 +110,12 @@ export default function Contact() {
               <option>Wall Dampness</option>
             </select>
 
-            <a href="https://wa.me/9867233817">
-            <button className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-3 rounded-xl font-semibold shadow-md transition mt-5">
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-3 rounded-xl font-semibold shadow-md transition mt-5">
               <Send size={18} className="inline mr-2" />Send Enquiry via WhatsApp
             </button>
-            </a>
+
 
           </div>
 

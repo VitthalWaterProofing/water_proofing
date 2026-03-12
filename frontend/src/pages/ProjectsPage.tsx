@@ -132,7 +132,7 @@ export default function ProjectsPage() {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row justify-center gap-4">
 
-            <a href="tel:+9867233817" >
+            <a href="tel:+919867233817" >
               <button className="flex items-center justify-center gap-2 bg-[#1a1a83] text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition w-full sm:w-auto">
                 <Phone size={16} />
                 Get Free Inspection

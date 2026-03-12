@@ -1,6 +1,6 @@
-import { Phone, Calendar, ShieldCheck, Users, Clock } from "lucide-react";
+import { Phone, ShieldCheck, Users, Clock } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   open: boolean;
@@ -9,6 +9,58 @@ type Props = {
 
 export default function InspectionModal({ open, onClose }: Props) {
 
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [location, setLocation] = useState("");
+  const [problem, setProblem] = useState("");
+  const [date, setDate] = useState("");
+  const [details, setDetails] = useState("");
+
+
+  const handleSubmit = () => {
+
+    if (!name.trim() && !phone.trim() && !location.trim() && !date && (!problem || problem === "Select problem type")) {
+      alert("Enter details");
+      return;
+    }
+
+    if (!name.trim()) {
+      alert("Name is required");
+      return;
+    }
+
+    if (!phone.trim()) {
+      alert("Mobile number is required");
+      return;
+    }
+
+    if (phone.length !== 10) {
+      alert("Mobile number must be 10 digits");
+      return;
+    }
+
+    if (!date) {
+      alert("Please select inspection date");
+      return;
+    }
+    if (!problem || problem === "Select problem type") {
+      alert("Please select problem type");
+      return;
+    }
+
+    const message = `Inspection Request:
+Name: ${name}
+Phone: ${phone}
+Location: ${location}
+Problem: ${problem}
+Preferred Date: ${date}
+Details: ${details}`;
+
+    const whatsappUrl = `https://wa.me/919867233817?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, "_blank");
+  };
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
   }, [open]);
@@ -16,7 +68,7 @@ export default function InspectionModal({ open, onClose }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center px-4 pt-10 sm:pt-0">
+    <div className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center px-4 pt-10 sm:pt-0">
 
       {/* Overlay */}
       <div
@@ -63,6 +115,8 @@ export default function InspectionModal({ open, onClose }: Props) {
             <input
               type="text"
               placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -75,6 +129,11 @@ export default function InspectionModal({ open, onClose }: Props) {
             <input
               type="tel"
               placeholder="Enter your mobile number"
+              value={phone}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                if (value.length <= 10) setPhone(value);
+              }}
               className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -87,6 +146,8 @@ export default function InspectionModal({ open, onClose }: Props) {
             <input
               type="text"
               placeholder="Enter property location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -97,6 +158,8 @@ export default function InspectionModal({ open, onClose }: Props) {
               Type of Problem
             </label>
             <select
+              value={problem}
+              onChange={(e) => setProblem(e.target.value)}
               className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option>Select problem type</option>
@@ -108,30 +171,20 @@ export default function InspectionModal({ open, onClose }: Props) {
           </div>
 
           {/* Date */}
+
+
           <div className="space-y-1">
             <label className="text-xs font-medium text-gray-700">
               Preferred Inspection Date
             </label>
 
-            <div className="relative">
-
-              <Calendar
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-              <input
-                type="text"
-                placeholder="Pick a date"
-                className="w-full bg-gray-100 border border-gray-200 rounded-lg pl-9 pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <Calendar
-                size={16}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-
-            </div>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              min={new Date().toISOString().split("T")[0]}
+              className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
           {/* Details */}
@@ -141,6 +194,8 @@ export default function InspectionModal({ open, onClose }: Props) {
             </label>
 
             <textarea
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
               placeholder="Describe your leakage or waterproofing problem"
               rows={3}
               className="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -148,16 +203,13 @@ export default function InspectionModal({ open, onClose }: Props) {
           </div>
 
           {/* WhatsApp Button */}
-          <a
-            href="https://wa.me/919867233817"
-            target="_blank"
-            className="block"
-          >
-            <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 transition">
-              <FaWhatsapp size={16} />
-              Book Inspection via WhatsApp
-            </button>
-          </a>
+          <button
+            onClick={handleSubmit}
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 transition">
+            <FaWhatsapp size={16} />
+            Book Inspection via WhatsApp
+          </button>
+
 
           {/* Call Button */}
           <a href="tel:+919867233817" className="block">
