@@ -1,89 +1,61 @@
-
 import Footer from "../components/layout/Footer";
 import LeakageCTA from "../components/sections/LeakageCTA";
 import { Phone, MapPin } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../services/api";
 
-
+interface Project {
+  _id: string;
+  title: string;
+  description: string;
+  location: string;
+  images: string[];
+  serviceType: { title: string };
+  isFeatured: boolean;
+}
 
 export default function ProjectsPage() {
-
   const [active, setActive] = useState("All");
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = ["All", "Residential", "Commercial", "Terrace", "Bathroom", "Water Tank"];
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await api.get('/projects');
+        const fetchedProjects = response.data;
+        setProjects(fetchedProjects);
 
+        const uniqueCategories = new Set<string>();
+        fetchedProjects.forEach((p: Project) => {
+          if (p.serviceType && p.serviceType.title) {
+            uniqueCategories.add(p.serviceType.title);
+          }
+        });
+        setCategories(["All", ...Array.from(uniqueCategories)]);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
 
-  const projects = [
-    {
-      title: "Residential Terrace Waterproofing – Bangalore",
-      category: ["Residential", "Terrace"],
-      location: "Bangalore, Karnataka",
-      desc: "Complete terrace leakage repair using brickbat coba and waterproof membrane coating.",
-      img: "/projects/terrace.jpg",
-    },
-    {
-      title: "Commercial Building Roof Treatment – Bangalore",
-      category: ["Commercial"],
-      location: "Bangalore, Karnataka",
-      desc: "Applied high-performance waterproof coating for long-term protection against heavy rainfall.",
-      img: "/projects/commercial.jpg",
-      status: "Ongoing",
-    },
-    {
-      title: "Society Terrace Renovation – Bangalore",
-      category: ["Residential", "Terrace"],
-      location: "Bangalore, Karnataka",
-      desc: "Large-scale terrace waterproofing project covering 15,000 sq. ft.",
-      img: "/projects/society.jpg",
-    },
-    {
-      title: "Bathroom Leakage Repair – Bangalore",
-      category: ["Bathroom"],
-      location: "Bangalore, Karnataka",
-      desc: "Advanced chemical injection treatment to stop seepage without tile removal.",
-      img: "/projects/bathroom.jpg",
-      status: "Ongoing",
-    },
-    {
-      title: "Overhead Water Tank Waterproofing – Bangalore",
-      category: ["Water Tank"],
-      location: "Bangalore, Karnataka",
-      desc: "Internal tank waterproofing using food-grade waterproof coating system.",
-      img: "/projects/watertank.jpg",
-    },
-    {
-      title: "Wall Dampness Treatment – Bangalore",
-      category: ["Residential"],
-      location: "Bangalore, Karnataka",
-      desc: "Exterior wall crack sealing and waterproof plaster protection.",
-      img: "/projects/wall.jpg",
-    },
-    {
-      title: "Industrial Shed Waterproofing – Bangalore",
-      category: ["Commercial"],
-      location: "Bangalore, Karnataka",
-      desc: "Industrial roof wateproofing with heat-reflective membrane application.",
-      img: "/projects/industrial.jpg",
-      status: "Ongoing",
-    },
-    {
-      title: "New Construction Waterproofing – Bangalore",
-      category: ["Residential", "Commercial"],
-      location: "Bangalore, Karnataka",
-      desc: "Full building waterproofing during construction stage for long-term durability.",
-      img: "/projects/newConstruction.jpg",
-    },
-  ];
+  const formatCategory = (title: string) => {
+    if (title === "All") return "All";
+    return title
+      .replace(' Waterproofing', '')
+      .replace(' Treatment', '')
+      .replace(' Leakage Repair', '');
+  };
 
   const filteredProjects =
     active === "All"
       ? projects
-      : projects.filter((project) =>
-        project.category.includes(active)
-      );
-
-
+      : projects.filter((project) => project.serviceType?.title === active);
 
   const transformations = [
     {
@@ -102,15 +74,12 @@ export default function ProjectsPage() {
       desc: "Waterproofing completed using premium-grade materials and expert supervision."
     }
   ];
+
   return (
-
-
     <>
       {/*======================= hero section============ */}
       <section className="bg-[#f8fafc] pt-24 md:pt-32 pb-16 md:pb-20 px-4 sm:px-6">
-
         <div className="max-w-4xl mx-auto text-center">
-
           {/* Label */}
           <p className="text-xs sm:text-sm font-semibold tracking-widest text-blue-600 uppercase mb-4">
             Our Projects
@@ -130,7 +99,6 @@ export default function ProjectsPage() {
           </p>
 
           {/* Buttons */}
-
           <div className="flex flex-col items-center gap-4 mt-6">
 
             {/* MOBILE BUTTONS */}
@@ -174,113 +142,96 @@ export default function ProjectsPage() {
                 </button>
               </a>
             </div>
-
           </div>
-
         </div>
-
       </section>
 
-
       {/*======================= projects section ============ */}
-      <section className="bg-[#f0f1f3] px-4 sm:px-6 pb-16">
-        < div className="flex flex-wrap justify-center gap-3 mb-12">
-
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActive(cat)}
-              className={`px-4 py-2 rounded-full text-sm transition mt-10
-                ${active === cat
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-gray-50 hover:bg-gray-200"
-                }`}
-            >
-              {cat === "All" ? "All Projects" : cat}
-            </button>
-          ))}
-
-        </div>
-
-        {/* PROJECT GRID */}
-
-        <div className="max-w-[1150px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-          {filteredProjects.map((project, index) => (
-
-            <div
-              key={index}
-              className="bg-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
-            >
-
-              {/* IMAGE */}
-
-              <div className="relative h-60 md:h-64 overflow-hidden">
-                <img
-                  src={project.img}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition duration-500 hover:scale-105"
-                />
-              </div>
-
-
-              {/* CONTENT */}
-
-              <div className="p-4">
-
-                <div className="flex gap-2 mb-2 flex-wrap">
-
-                  {project.category.map((cat, i) => (
-
-                    <span
-                      key={i}
-                      className="text-[11px] bg-blue-100 text-blue-800 px-2 py-[2px] rounded-full font-medium"
-                    >
-                      {cat}
-                    </span>
-
-                  ))}
-
-                  {
-                    project.status === "Ongoing" && (
-                      <span className="text-xs text-orange-500 font-medium ml-auto">
-                        Ongoing
-                      </span>
-                    )
-                  }
-
-
-
-                </div>
-
-                <h3 className="font-semibold text-[#0f172a] text-lg mb-1">
-                  {project.title}
-                </h3>
-
-                <p className="text-xs text-gray-500 mb-2">
-                  <MapPin size={16} className="inline mr-1" />
-                  {project.location}
-                </p>
-
-                <p className="text-sm text-gray-600">
-                  {project.desc}
-                </p>
-
-              </div>
-
+      <section className="bg-[#f0f1f3] px-4 sm:px-6 pb-16 min-h-[500px]">
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActive(cat)}
+                  className={`px-4 py-2 rounded-full text-sm transition mt-10
+                    ${active === cat
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-50 hover:bg-gray-200"
+                    }`}
+                >
+                  {formatCategory(cat)}
+                </button>
+              ))}
             </div>
 
-          ))}
+            {/* PROJECT GRID */}
+            <div className="max-w-[1150px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map((project) => (
+                <div
+                  key={project._id}
+                  className="bg-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col"
+                >
+                  {/* IMAGE */}
+                  <div className="relative h-60 md:h-64 overflow-hidden bg-white">
+                    <img
+                      src={project.images?.[0] || 'https://via.placeholder.com/400x300?text=No+Image'}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition duration-500 hover:scale-105"
+                    />
+                  </div>
 
-        </div>
-      </section >
+                  {/* CONTENT */}
+                  <div className="p-4 flex-1 flex flex-col">
+                    <div className="flex gap-2 mb-2 flex-wrap">
+                      {project.serviceType?.title && (
+                        <span className="text-[11px] bg-blue-100 text-blue-800 px-2 py-[2px] rounded-full font-medium">
+                          {formatCategory(project.serviceType.title)}
+                        </span>
+                      )}
+                      
+                      {project.isFeatured && (
+                        <span className="text-[11px] bg-yellow-100 text-yellow-800 px-2 py-[2px] rounded-full font-medium ml-auto">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="font-semibold text-[#0f172a] text-lg mb-1">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-xs text-gray-500 mb-2">
+                      <MapPin size={16} className="inline mr-1" />
+                      {project.location}
+                    </p>
+
+                    <p className="text-sm text-gray-600 line-clamp-3">
+                      {project.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              
+              {filteredProjects.length === 0 && (
+                <div className="col-span-full py-12 text-center text-gray-500">
+                  No projects found for this category.
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </section>
 
       {/*=========before-after ===============*/}
       <section className="bg-[#f8fafc] py-16 md:py-20 px-4 sm:px-6">
-
         {/* Heading */}
         <div className="max-w-6xl mx-auto text-center">
-
           <p className="text-xs sm:text-sm font-semibold tracking-widest text-blue-600 uppercase mb-3">
             Transformations
           </p>
@@ -292,20 +243,15 @@ export default function ProjectsPage() {
           <p className="text-gray-500 text-sm sm:text-base max-w-xl mx-auto mb-10 md:mb-12">
             See the transformation achieved through our professional waterproofing services.
           </p>
-
         </div>
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
           {transformations.map((item, index) => (
-
             <div
               key={index}
               className="bg-gray-50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition"
             >
-
               <div className="relative h-60 md:h-64 overflow-hidden">
-
                 <img
                   src={item.img}
                   className="w-full h-full object-cover"
@@ -323,35 +269,24 @@ export default function ProjectsPage() {
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full">
                   ↔
                 </div>
-
               </div>
 
               <div className="p-4 text-center">
                 <h3 className="font-semibold text-[#0f172a] mb-1">
                   {item.title}
                 </h3>
-
                 <p className="text-sm text-gray-500">
                   {item.desc}
                 </p>
               </div>
-
             </div>
-
           ))}
-
         </div>
-
-
       </section>
 
-
       {/*============stats section================*/}
-
       <section className="bg-gradient-to-r from-[#0f2a44] to-[#122f4d] py-16 md:py-20 px-4 sm:px-6 text-center text-white">
-
         <div className="max-w-6xl mx-auto">
-
           {/* Heading */}
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
             Our Work Speaks for Itself
@@ -364,8 +299,6 @@ export default function ProjectsPage() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
-
-            {/* Stat */}
             <div>
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-400">
                 120+
@@ -374,7 +307,6 @@ export default function ProjectsPage() {
                 Projects Completed
               </p>
             </div>
-
             <div>
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-400">
                 10+
@@ -383,7 +315,6 @@ export default function ProjectsPage() {
                 Years of Experience
               </p>
             </div>
-
             <div>
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-400">
                 95%
@@ -392,7 +323,6 @@ export default function ProjectsPage() {
                 Client Satisfaction
               </p>
             </div>
-
             <div>
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-400">
                 50+
@@ -401,11 +331,8 @@ export default function ProjectsPage() {
                 Residential Societies Served
               </p>
             </div>
-
           </div>
-
         </div>
-
       </section>
 
       <LeakageCTA />
