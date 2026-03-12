@@ -12,6 +12,9 @@ import { setupSwagger } from './config/swagger';
 
 const app: Application = express();
 
+// Trust proxy for secure cookies to work on Vercel
+app.set("trust proxy", 1);
+
 // Middleware
 app.use(helmet());
 const allowedOrigins = [
