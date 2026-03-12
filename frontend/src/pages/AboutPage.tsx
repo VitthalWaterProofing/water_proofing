@@ -306,7 +306,7 @@ export default function AboutPage() {
               Let our experienced team safeguard your investment.
             </p>
 
-              <a href="tel:+919876543210">
+              <a href="tel:+919867233817">
             <button className="bg-blue-500 hover:bg-blue-600 transition px-6 py-3 rounded-lg text-sm font-medium">
               <Phone size={16} className="inline mr-2" />
               Contact Us Today

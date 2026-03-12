@@ -44,17 +44,22 @@ export default function Hero() {
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a href="tel:+9867233817" className="w-full sm:w-auto">
-              <button className="flex items-center justify-center gap-2 bg-[#1443a8] hover:bg-[#1d4ed8] px-6 py-3 rounded-lg font-semibold transition">
+          <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+
+            <a href="tel:+919867233817" className="w-full sm:w-auto">
+              <button className="min-w-[220px] flex items-center justify-center gap-2 bg-[#1443a8] hover:bg-[#1d4ed8] px-6 py-3 rounded-lg font-semibold transition">
                 <Phone size={16} /> Get Free Inspection
               </button>
             </a>
 
-            <a href="https://wa.me/9867233817" className="w-full sm:w-auto">
-              <button className="flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1e3a6d] transition">
+            <a
+              href="https://wa.me/919867233817?text=Hello%2C%0A%0AI%20would%20like%20to%20enquire%20about%20waterproofing%20services.%0A%0AName%3A%0ALocation%3A%0AProblem%20Type%3A%0APreferred%20Inspection%20Date%3A%0A%0ALooking%20forward%20to%20your%20response."
+              target="_blank"
+              className="w-full sm:w-auto"
+            >
+              <button className="min-w-[220px] flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1e3a6d] transition">
                 <FaWhatsapp size={18} />
-                WhatsApp Now
+                Send Enquiry
               </button>
             </a>
           </div>
