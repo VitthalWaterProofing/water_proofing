@@ -1,7 +1,50 @@
 import Container from "../layout/Container";
-import { MapPin, Phone, Clock, Send } from "lucide-react";
+
+import { MapPin, Phone, Clock, Send, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import api from "../../services/api";
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    customerName: "",
+    email: "",
+    phone: "",
+    serviceRequested: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMsg("");
+
+    try {
+      await api.post('/leads', formData);
+      setIsSuccess(true);
+      setFormData({
+        customerName: "",
+        email: "",
+        phone: "",
+        serviceRequested: "",
+        message: ""
+      });
+      
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => setIsSuccess(false), 5000);
+    } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } };
+      setErrorMsg(err.response?.data?.message || "Failed to submit enquiry. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <section id="contact" className="bg-white py-20">
       <Container>
@@ -19,43 +62,98 @@ export default function Contact() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
           {/* Left Form */}
-          <div className="space-y-4 w-full md:max-w-md">
+          <form onSubmit={handleSubmit} className="space-y-4 w-full md:max-w-md">
+            
+            {isSuccess && (
+              <div className="bg-green-50 text-green-700 p-4 rounded-xl flex items-center gap-3 border border-green-200">
+                <CheckCircle size={20} className="shrink-0" />
+                <p className="text-sm font-medium">Thank you! Your enquiry has been received. Our team will contact you shortly.</p>
+              </div>
+            )}
+            
+            {errorMsg && (
+              <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 text-sm">
+                {errorMsg}
+              </div>
+            )}
 
             <input
               type="text"
-              placeholder="Your Name"
+              name="customerName"
+              value={formData.customerName}
+              onChange={handleChange}
+              placeholder="Your Name *"
+              required
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <input
-              type="text"
-              placeholder="Phone Number"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email Address *"
+              required
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <input
-              type="text"
-              placeholder="Your Location"
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Phone Number *"
+              required
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <select
+              name="serviceRequested"
+              value={formData.serviceRequested}
+              onChange={handleChange}
+              required
               className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option>Select Problem Type</option>
-              <option>Terrace Leakage</option>
-              <option>Bathroom Leakage</option>
-              <option>Water Tank Issue</option>
-              <option>Wall Dampness</option>
+              <option value="" disabled>Select Problem Type *</option>
+              <option value="Terrace Leakage">Terrace Leakage</option>
+              <option value="Bathroom Leakage">Bathroom Leakage</option>
+              <option value="Water Tank Issue">Water Tank Issue</option>
+              <option value="Wall Dampness">Wall Dampness</option>
+              <option value="Other">Other Issues</option>
             </select>
+            
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Provide details about the issue... *"
+              required
+              rows={4}
+              className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            />
 
-            <a href="https://wa.me/9867233817">
-            <button className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-3 rounded-xl font-semibold shadow-md transition mt-5">
-              <Send size={18} className="inline mr-2" />Send Enquiry via WhatsApp
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className={`w-full text-white py-3 rounded-xl font-semibold shadow-md transition flex items-center justify-center gap-2 ${
+                isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-[#1e3a8a] hover:bg-[#1e40af]'
+              }`}
+            >
+              {isSubmitting ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              ) : (
+                <><Send size={18} /> Submit Enquiry</>
+              )}
             </button>
-            </a>
+            
+            <div className="text-center mt-4">
+              <span className="text-sm text-gray-500">Or contact us directly via</span>
+              <a href="https://wa.me/9867233817" target="_blank" rel="noreferrer" className="block mt-2 text-[#25D366] font-medium hover:underline">
+                WhatsApp Chat
+              </a>
+            </div>
 
-          </div>
+          </form>
 
           {/* Right Info Cards */}
           <div className="space-y-6">

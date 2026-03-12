@@ -1,53 +1,57 @@
 import Container from "../layout/Container";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../../services/api";
+
+interface Project {
+  _id: string;
+  images: string[];
+  serviceType: {
+    title: string;
+  };
+}
 
 export default function Projects() {
-  const categories = ["All", "Terrace", "Bathroom", "Tank", "Commercial"];
-
-  const projects = [
-    {
-      img: "/projects/commercial.jpg",
-      category: "Terrace",
-    },
-
-    {
-      img: "/services/brickbat.jpeg",
-      category: "Commercial",
-    },
-    {
-      img: "/projects/terrace.jpg",
-      category: "Terrace",
-    },
-    {
-      img: "/projects/wall.jpg",
-      category: "Commercial",
-    },
-    {
-      img: "/projects/bathroom.jpg",
-      category: "Bathroom",
-    },
-    {
-      img: "/projects/industrial.jpg",
-      category: "Commercial",
-    },
-    {
-      img: "/services/khoba.jpeg",
-      category: "Terrace",
-    },
-
-    {
-      img: "/services/watertank.jpg",
-      category: "Tank",
-    },
-
-  ];
-
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
   const [active, setActive] = useState("All");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await api.get('/projects');
+        const fetchedProjects = response.data;
+        setProjects(fetchedProjects);
+        
+        // Extract unique categories from serviceType.title
+        const uniqueCategories = new Set<string>();
+        fetchedProjects.forEach((p: Project) => {
+          if (p.serviceType && p.serviceType.title) {
+            uniqueCategories.add(p.serviceType.title);
+          }
+        });
+        setCategories(["All", ...Array.from(uniqueCategories)]);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  const formatCategory = (title: string) => {
+    if (title === "All") return "All";
+    return title
+      .replace(' Waterproofing', '')
+      .replace(' Treatment', '')
+      .replace(' Leakage Repair', '');
+  };
 
   const filtered =
     active === "All"
       ? projects
-      : projects.filter((p) => p.category === active);
+      : projects.filter((p) => p.serviceType?.title === active);
 
   return (
     <section className="bg-[#f8fafc] py-20">
@@ -62,41 +66,48 @@ export default function Projects() {
           </h2>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActive(cat)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition 
-                ${active === cat
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-600 hover:bg-blue-50"
-                }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filtered.map((project, index) => (
-            <div
-              key={index}
-              className="w-full h-48 sm:h-56 lg:h-60 overflow-hidden rounded-xl"
-            >
-              <img
-                src={project.img}
-                alt="Project"
-                className="w-full h-full object-cover hover:scale-105 transition duration-300"
-              />
+        {loading ? (
+          <div className="flex justify-center items-center h-48">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <>
+            {/* Filters */}
+            <div className="flex flex-wrap justify-center gap-3 mb-10">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActive(cat)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition 
+                    ${active === cat
+                      ? "bg-blue-600 text-white"
+                      : "bg-white text-gray-600 hover:bg-blue-50"
+                    }`}
+                >
+                  {formatCategory(cat)}
+                </button>
+              ))}
             </div>
-          ))}
-        </div>
-      </Container>
 
+
+            {/* Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {filtered.map((project) => (
+                <div
+                  key={project._id}
+                  className="w-full h-48 sm:h-56 lg:h-60 overflow-hidden rounded-xl bg-gray-200"
+                >
+                  <img
+                    src={project.images?.[0] || 'https://via.placeholder.com/400x300?text=No+Image'}
+                    alt="Project"
+                    className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </Container>
     </section>
   );
 }

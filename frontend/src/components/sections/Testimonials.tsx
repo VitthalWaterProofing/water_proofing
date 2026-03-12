@@ -1,31 +1,33 @@
-
 import Container from "../layout/Container";
 import { Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import api from "../../services/api";
+
+interface Testimonial {
+  _id: string;
+  customerName: string;
+  rating: number;
+  reviewText: string;
+}
 
 export default function Testimonials() {
+  const [reviews, setReviews] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const reviews = [
-    {
-      text: "Excellent work on our society terrace. No leakage even after heavy monsoon. Highly recommended!",
-      name: "Rajesh Patil",
-      location: "Pune",
-    },
-    {
-      text: "Professional team, quality materials, and delivered on time. Our bathroom leakage is completely fixed.",
-      name: "Sunita Deshmukh",
-      location: "Mumbai",
-    },
-    {
-      text: "We got brickbat coba done for our bungalow terrace. Great quality work at reasonable price.",
-      name: "Amit Kulkarni",
-      location: "Nagpur",
-    },
-    {
-      text: "The china mosaic work on our terrace looks beautiful and no more water seepage. Very satisfied!",
-      name: "Priya Sharma",
-      location: "Nashik",
-    },
-  ];
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await api.get('/testimonials');
+        setReviews(response.data);
+      } catch (error) {
+        console.error("Failed to fetch testimonials:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
   return (
     <section id="testimonials" className="bg-[#cfe0f5] py-20">
       <Container>
@@ -38,35 +40,44 @@ export default function Testimonials() {
           </h2>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {reviews.map((review, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl shadow-sm p-6 flex flex-col justify-between"
-            >
-              {/* Stars */}
-              <div className="flex gap-1 mb-4 text-blue-500">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={16} fill="currentColor" />
-                ))}
-              </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-48">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Cards */}
+            {reviews.map((review) => (
+              <div
+                key={review._id}
+                className="bg-white rounded-2xl shadow-sm p-6 flex flex-col justify-between"
+              >
+                {/* Stars */}
+                <div className="flex gap-1 mb-4 text-blue-500">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={16} fill={i < review.rating ? "currentColor" : "none"} className={i < review.rating ? "" : "text-gray-300"} />
+                  ))}
+                </div>
 
-              <p className="text-sm text-gray-600 mb-6 italic">
-                "{review.text}"
-              </p>
+                <p className="text-sm text-gray-600 mb-6 italic">
+                  "{review.reviewText}"
+                </p>
 
-              <div>
-                <p className="font-semibold text-[#0f172a]">
-                  {review.name}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {review.location}
-                </p>
+                <div>
+                  <p className="font-semibold text-[#0f172a]">
+                    {review.customerName}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+            
+            {reviews.length === 0 && (
+              <div className="col-span-full py-10 text-center text-gray-500">
+                More testimonials coming soon.
+              </div>
+            )}
+          </div>
+        )}
       </Container>
     </section>
   );
