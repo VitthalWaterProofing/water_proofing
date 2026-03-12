@@ -10,9 +10,9 @@ export default function LeakageCTA() {
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Leakage Problem?
           </h2>
-          <p className="text-blue-100 mb-8">Book your free site visit today and get a professional <br />assessment from our expert team.</p>
+          <p className="text-blue-100 mb-8 max-w-lg mx-auto">Book your free site visit today and get a professional assessment from our expert team.</p>
 
-          <a href="tel:+9867233817"
+          <a href="tel:+919867233817"
             className="inline-flex items-center gap-2 border border-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1e3a8a] transition">
             <Phone size={18} />
             Call Now
