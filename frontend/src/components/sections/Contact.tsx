@@ -12,16 +12,59 @@ export default function Contact() {
     serviceRequested: "",
     message: ""
   });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  const validateField = (name: string, value: string) => {
+    let error = "";
+    if (name === "customerName" && value.trim().length < 2) {
+      error = "Name must be at least 2 characters.";
+    }
+    if (name === "email" && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+      error = "Please enter a valid email address.";
+    }
+    if (name === "phone" && !/^\d{10}$/.test(value)) {
+      error = "Valid 10-digit phone number is required.";
+    }
+    if (name === "serviceRequested" && value === "") {
+      error = "Please select a service type.";
+    }
+    if (name === "message" && value.trim().length < 10) {
+      error = "Message must be at least 10 characters.";
+    }
+    return error;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    if (name === "phone") {
+      const formattedValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, [name]: formattedValue });
+      if (formErrors[name]) setFormErrors({ ...formErrors, [name]: validateField(name, formattedValue) });
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
+    if (formErrors[name]) setFormErrors({ ...formErrors, [name]: validateField(name, value) });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const errors: Record<string, string> = {};
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key as keyof typeof formData]);
+      if (error) errors[key] = error;
+    });
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMsg("");
 
@@ -77,60 +120,75 @@ export default function Contact() {
               </div>
             )}
 
-            <input
-              type="text"
-              name="customerName"
-              value={formData.customerName}
-              onChange={handleChange}
-              placeholder="Your Name *"
-              required
-              className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div>
+              <input
+                type="text"
+                name="customerName"
+                value={formData.customerName}
+                onChange={handleChange}
+                placeholder="Your Name *"
+                required
+                className={`w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 ${formErrors.customerName ? 'ring-2 ring-red-500' : 'focus:ring-blue-500'}`}
+              />
+              {formErrors.customerName && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.customerName}</p>}
+            </div>
 
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email Address *"
-              required
-              className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email Address *"
+                required
+                className={`w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 ${formErrors.email ? 'ring-2 ring-red-500' : 'focus:ring-blue-500'}`}
+              />
+              {formErrors.email && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.email}</p>}
+            </div>
 
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="Phone Number *"
-              required
-              className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone Number *"
+                required
+                className={`w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 ${formErrors.phone ? 'ring-2 ring-red-500' : 'focus:ring-blue-500'}`}
+              />
+              {formErrors.phone && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.phone}</p>}
+            </div>
 
-            <select
-              name="serviceRequested"
-              value={formData.serviceRequested}
-              onChange={handleChange}
-              required
-              className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="" disabled>Select Problem Type *</option>
-              <option value="Terrace Leakage">Terrace Leakage</option>
-              <option value="Bathroom Leakage">Bathroom Leakage</option>
-              <option value="Water Tank Issue">Water Tank Issue</option>
-              <option value="Wall Dampness">Wall Dampness</option>
-              <option value="Other">Other Issues</option>
-            </select>
+            <div>
+              <select
+                name="serviceRequested"
+                value={formData.serviceRequested}
+                onChange={handleChange}
+                required
+                className={`w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 ${formErrors.serviceRequested ? 'ring-2 ring-red-500' : 'focus:ring-blue-500'}`}
+              >
+                <option value="" disabled>Select Problem Type *</option>
+                <option value="Terrace Leakage">Terrace Leakage</option>
+                <option value="Bathroom Leakage">Bathroom Leakage</option>
+                <option value="Water Tank Issue">Water Tank Issue</option>
+                <option value="Wall Dampness">Wall Dampness</option>
+                <option value="Other">Other Issues</option>
+              </select>
+              {formErrors.serviceRequested && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.serviceRequested}</p>}
+            </div>
             
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Provide details about the issue... *"
-              required
-              rows={4}
-              className="w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            />
+            <div>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Provide details about the issue... *"
+                required
+                rows={4}
+                className={`w-full bg-gray-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 resize-none ${formErrors.message ? 'ring-2 ring-red-500' : 'focus:ring-blue-500'}`}
+              />
+              {formErrors.message && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.message}</p>}
+            </div>
 
             <button 
               type="submit" 
