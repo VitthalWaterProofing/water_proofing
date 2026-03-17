@@ -11,7 +11,13 @@ export default function Footer() {
           {/* Logo + About */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <img src="/logo.png" alt="Logo" className="w-10 h-10" />
+              <div className="w-11 h-11 rounded-full overflow-hidden bg-white/90 flex items-center justify-center">
+                <img
+                  src="/logo.png"
+                  alt="Logo"
+                  className="w-full h-full object-cover scale-110"
+                />
+              </div>
               <div>
                 <h3 className="font-semibold">Pandarinath Vitthal</h3>
                 <p className="text-sm text-[#3999da]">
@@ -54,7 +60,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-sm text-blue-200">
-              <li><Phone className="inline mr-2" size={15}/>+91 98672 33817</li>
+              <li><Phone className="inline mr-2" size={15} />+91 98672 33817</li>
               <li><MailIcon className="inline mr-2" size={15} />info@pvwaterproofing.com</li>
               <li><MapPin className="inline mr-2" size={15} />Bangalore, India</li>
             </ul>
