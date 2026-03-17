@@ -77,3 +77,8 @@ button:focus-visible {
 html {
   scroll-behavior: smooth;
 }
+
+/* Offset for fixed navbar on all hashed target elements */
+:target {
+  scroll-margin-top: 90px;
+}

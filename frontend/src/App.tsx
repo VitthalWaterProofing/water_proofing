@@ -23,14 +23,34 @@ function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (hash) {
+    // If there's no hash, just scroll to the top of the new page
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      return;
+    }
+
+    // Function to handle the actual scrolling logic
+    const scrollToHash = () => {
       const element = document.querySelector(hash);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        element.scrollIntoView({ behavior: "instant" });
+        return true; // Found and scrolled
       }
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      return false; // Not found yet
+    };
+
+    // 1. Try scrolling immediately (if the page was already loaded)
+    let found = scrollToHash();
+
+    // 2. If it's a cross-page navigation, the element might not exist yet 
+    // or images/API requests might push it down later. 
+    // We use a few staggered timeouts to catch late renders.
+    if (!found) {
+      setTimeout(() => { if (!found) found = scrollToHash(); }, 100);
+      setTimeout(() => { if (!found) found = scrollToHash(); }, 500);
+      setTimeout(() => { if (!found) found = scrollToHash(); }, 1500); // Failsafe for slow connections
     }
+
   }, [pathname, hash]);
 
   return null;
