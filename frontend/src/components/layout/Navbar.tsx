@@ -31,11 +31,13 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 sm:gap-3">
-          <img
-            src="/logo.png"
-            alt="Logo"
-            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-          />
+          <div className="w-11 h-11 sm:w-11 sm:h-11 rounded-full overflow-hidden bg-white flex items-center justify-center">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="w-full h-full object-cover scale-110"
+            />
+          </div>
           <div className="leading-tight">
             <h1 className="text-sm sm:text-base lg:text-lg font-semibold">
               Pandarinath Vitthal
