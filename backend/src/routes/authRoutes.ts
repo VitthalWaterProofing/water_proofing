@@ -5,6 +5,7 @@ import {
   registerUser,
   logoutUser,
   getUserProfile,
+  verifyOtp,
 } from '../controllers/authController';
 import { protect, admin } from '../middlewares/authMiddleware';
 
@@ -28,6 +29,16 @@ router.post(
   ],
   authUser
 );
+
+router.post(
+  '/verify-otp',
+  [
+    body('otpCode').isNumeric().isLength({min:6 , max:6}).withMessage('OTP must of 6 digits'),
+    body('userId').notEmpty().withMessage('User ID is required'),
+    validateRequest,
+  ],
+  verifyOtp
+)
 
 router.post(
   '/register',
