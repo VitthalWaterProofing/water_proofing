@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import * as authService from '../services/authService';
+import sendEmail from '../utils/sendEmail';
+import { otpEmailTemplate } from '../utils/emailTemplates';
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 // @access  Public
@@ -10,20 +12,27 @@ export const authUser = async (req: Request, res: Response) => {
     const result = await authService.loginUser(email, password);
 
     if (result) {
-      const { user, token } = result;
-      // Set JWT in HttpOnly cookie
-      res.cookie('jwt', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      });
+      const { user, otp } = result;
+
+      // Log OTP to console for local dev testing
+      // console.log(`[DEV] OTP for ${user.email}: ${otp}`);
+
+      try {
+        const template = otpEmailTemplate(otp);
+        await sendEmail({
+          email: user.email,
+          subject: template.subject,
+          message: `Your OTP is: ${otp}. It expires in 10 minutes.`,
+          html: template.html,
+        });
+      } catch (emailError) {
+        console.error('Failed to send OTP email:', emailError);
+        // Don't block the flow - OTP is saved in DB, email failure is non-fatal
+      }
 
       res.json({
         _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+        message: "OTP sent successfully",
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
@@ -32,6 +41,32 @@ export const authUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server error during authentication' });
   }
 };
+
+export const verifyOtp = async (req: Request, res: Response) => {
+  const {userId, otpCode} = req.body;
+  if(!userId || !otpCode){
+    return res.status(400).json({ message: "UserId and OTP is required" });
+  }
+  try {
+    const result = await authService.verifyOtp(userId, otpCode);
+    if(result){
+      res.cookie("jwt", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+      res.json({
+        _id: result.user._id,
+        name: result.user.name,
+        email: result.user.email,
+        role: result.user.role,
+      });
+    }
+  }catch (error: any) {
+    res.status(401).json({ message: error.message }); 
+  }
+}
 
 // @desc    Register a new admin user (Initially only reachable internally or via CLI)
 // @route   POST /api/auth/register

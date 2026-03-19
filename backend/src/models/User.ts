@@ -6,6 +6,8 @@ export interface IUser extends Document {
   email: string;
   password?: string;
   role: 'super_admin' | 'staff';
+  otpCode?: string;
+  otpExpiresAt?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -34,6 +36,12 @@ const UserSchema: Schema = new Schema(
       type: String,
       enum: ['super_admin', 'staff'],
       default: 'staff',
+    },
+    otpCode: {
+      type: String,
+    },
+    otpExpiresAt: {
+      type: Date,
     },
   },
   {
