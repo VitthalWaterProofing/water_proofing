@@ -386,7 +386,7 @@ export default function ServicesPage() {
         open={isInspectionOpen}
         onClose={() => setIsInspectionOpen(false)}
       />
-      <FloatingActions hide={isInspectionOpen} />
+      <FloatingActions hide={true} />
     </>
   );
 }

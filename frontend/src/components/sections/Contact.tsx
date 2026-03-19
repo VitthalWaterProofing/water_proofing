@@ -3,6 +3,7 @@ import Container from "../layout/Container";
 import { MapPin, Phone, Clock, Send, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import api from "../../services/api";
+import FloatingActions from "../FloatingActions";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ export default function Contact() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+
+
   const validateField = (name: string, value: string) => {
     let error = "";
     if (name === "customerName" && value.trim().length < 2) {
@@ -25,8 +28,12 @@ export default function Contact() {
     if (name === "email" && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
       error = "Please enter a valid email address.";
     }
-    if (name === "phone" && !/^\d{10}$/.test(value)) {
-      error = "Valid 10-digit phone number is required.";
+    if (name === "phone") {
+      if (!/^\d{10}$/.test(value)) {
+        error = "Valid 10-digit phone number is required.";
+      } else if (!/^[6-9]\d{9}$/.test(value)) {
+        error = "Enter a valid mobile number (must start with 6, 7, 8 or 9).";
+      }
     }
     if (name === "serviceRequested" && value === "") {
       error = "Please select a service type.";
@@ -37,11 +44,14 @@ export default function Contact() {
     return error;
   };
 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
+
     if (name === "phone") {
-      const formattedValue = value.replace(/\D/g, '').slice(0, 10);
+      const digitsOnly = value.replace(/\D/g, '');
+      const noLeadingZero = digitsOnly.replace(/^0+/, '');
+      const formattedValue = noLeadingZero.slice(0, 10);
       setFormData({ ...formData, [name]: formattedValue });
       if (formErrors[name]) setFormErrors({ ...formErrors, [name]: validateField(name, formattedValue) });
       return;
@@ -78,7 +88,7 @@ export default function Contact() {
         serviceRequested: "",
         message: ""
       });
-      
+
       // Auto-hide success message after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     } catch (error) {
@@ -106,14 +116,14 @@ export default function Contact() {
 
           {/* Left Form */}
           <form onSubmit={handleSubmit} className="space-y-4 w-full md:max-w-md">
-            
+
             {isSuccess && (
               <div className="bg-green-50 text-green-700 p-4 rounded-xl flex items-center gap-3 border border-green-200">
                 <CheckCircle size={20} className="shrink-0" />
                 <p className="text-sm font-medium">Thank you! Your enquiry has been received. Our team will contact you shortly.</p>
               </div>
             )}
-            
+
             {errorMsg && (
               <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 text-sm">
                 {errorMsg}
@@ -176,7 +186,7 @@ export default function Contact() {
               </select>
               {formErrors.serviceRequested && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.serviceRequested}</p>}
             </div>
-            
+
             <div>
               <textarea
                 name="message"
@@ -190,12 +200,11 @@ export default function Contact() {
               {formErrors.message && <p className="text-red-500 text-xs mt-1 ml-1">{formErrors.message}</p>}
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isSubmitting}
-              className={`w-full text-white py-3 rounded-xl font-semibold shadow-md transition flex items-center justify-center gap-2 ${
-                isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-[#1e3a8a] hover:bg-[#1e40af]'
-              }`}
+              className={`w-full text-white py-3 rounded-xl font-semibold shadow-md transition flex items-center justify-center gap-2 ${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-[#1e3a8a] hover:bg-[#1e40af]'
+                }`}
             >
               {isSubmitting ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -203,13 +212,6 @@ export default function Contact() {
                 <><Send size={18} /> Submit Enquiry</>
               )}
             </button>
-            
-            <div className="text-center mt-4">
-              <span className="text-sm text-gray-500">Or contact us directly via</span>
-              <a href="https://wa.me/9867233817" target="_blank" rel="noreferrer" className="block mt-2 text-[#25D366] font-medium hover:underline">
-                WhatsApp Chat
-              </a>
-            </div>
 
           </form>
 
@@ -252,6 +254,9 @@ export default function Contact() {
         </div>
 
       </Container>
+      <FloatingActions
+        formData={formData}
+      />
     </section>
   );
 }
