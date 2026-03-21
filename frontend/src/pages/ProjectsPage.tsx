@@ -11,30 +11,21 @@ interface Project {
   description: string;
   location: string;
   images: string[];
-  serviceType: { title: string };
+  serviceType: { title: string; parentCategory?: string };
   isFeatured: boolean;
 }
 
 export default function ProjectsPage() {
   const [active, setActive] = useState("All");
   const [projects, setProjects] = useState<Project[]>([]);
-  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [categories] = useState<string[]>(["All", "Terrace", "Bathroom", "Tank", "Commercial"]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const response = await api.get('/projects');
-        const fetchedProjects = response.data;
-        setProjects(fetchedProjects);
-
-        const uniqueCategories = new Set<string>();
-        fetchedProjects.forEach((p: Project) => {
-          if (p.serviceType && p.serviceType.title) {
-            uniqueCategories.add(p.serviceType.title);
-          }
-        });
-        setCategories(["All", ...Array.from(uniqueCategories)]);
+        setProjects(response.data);
       } catch (error) {
         console.error("Failed to fetch projects:", error);
       } finally {
@@ -44,18 +35,10 @@ export default function ProjectsPage() {
     fetchProjects();
   }, []);
 
-  const formatCategory = (title: string) => {
-    if (title === "All") return "All";
-    return title
-      .replace(' Waterproofing', '')
-      .replace(' Treatment', '')
-      .replace(' Leakage Repair', '');
-  };
-
   const filteredProjects =
     active === "All"
       ? projects
-      : projects.filter((project) => project.serviceType?.title === active);
+      : projects.filter((project) => project.serviceType?.parentCategory === active);
 
   const transformations = [
     {
@@ -165,7 +148,7 @@ export default function ProjectsPage() {
                       : "bg-gray-50 hover:bg-gray-200"
                     }`}
                 >
-                  {formatCategory(cat)}
+                  {cat}
                 </button>
               ))}
             </div>
@@ -189,9 +172,9 @@ export default function ProjectsPage() {
                   {/* CONTENT */}
                   <div className="p-4 flex-1 flex flex-col">
                     <div className="flex gap-2 mb-2 flex-wrap">
-                      {project.serviceType?.title && (
+                      {project.serviceType?.parentCategory && (
                         <span className="text-[11px] bg-blue-100 text-blue-800 px-2 py-[2px] rounded-full font-medium">
-                          {formatCategory(project.serviceType.title)}
+                          {project.serviceType.parentCategory}
                         </span>
                       )}
                       

@@ -5,6 +5,7 @@ import { Plus, Edit2, Trash2, Image as ImageIcon } from 'lucide-react';
 interface Service {
   _id: string;
   title: string;
+  parentCategory?: string;
   shortDescription: string;
   description: string;
   coverImage?: string;
@@ -21,6 +22,7 @@ const ServicesManagement = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [formData, setFormData] = useState({
     title: '',
+    parentCategory: 'Other',
     shortDescription: '',
     description: '',
     coverImage: '',
@@ -50,6 +52,7 @@ const ServicesManagement = () => {
     setEditingService(null);
     setFormData({
       title: '',
+      parentCategory: 'Other',
       shortDescription: '',
       description: '',
       coverImage: '',
@@ -64,6 +67,7 @@ const ServicesManagement = () => {
     setEditingService(service);
     setFormData({
       title: service.title,
+      parentCategory: service.parentCategory || 'Other',
       shortDescription: service.shortDescription,
       description: service.description,
       coverImage: service.coverImage || '',
@@ -228,6 +232,22 @@ const ServicesManagement = () => {
                     value={formData.title}
                     onChange={e => setFormData({...formData, title: e.target.value})}
                   />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Parent Category</label>
+                  <select 
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    value={formData.parentCategory}
+                    onChange={e => setFormData({...formData, parentCategory: e.target.value})}
+                  >
+                    <option value="Terrace">Terrace</option>
+                    <option value="Bathroom">Bathroom</option>
+                    <option value="Tank">Tank</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
                 
                 <div>
