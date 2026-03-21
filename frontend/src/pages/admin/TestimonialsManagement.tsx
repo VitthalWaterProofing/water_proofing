@@ -38,7 +38,7 @@ const TestimonialsManagement = () => {
         t._id === id ? { ...t, isApproved: !currentStatus } : t
       ));
       
-      await api.put(`/testimonials/${id}/approve`, { isApproved: !currentStatus });
+      await api.put(`/testimonials/${id}`, { isApproved: !currentStatus });
     } catch {
       alert('Failed to update testimonial status');
       fetchTestimonials(); // Revert on failure

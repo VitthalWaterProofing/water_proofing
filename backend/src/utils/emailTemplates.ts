@@ -74,3 +74,70 @@ export const otpEmailTemplate = (otp: number) => {
     `,
   };
 };
+
+export const reviewRequestTemplate = (customerName: string, projectName: string, reviewLink: string) => {
+  const year = new Date().getFullYear();
+  return {
+    subject: `How did we do? Tell us about your waterproofing project!`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+      <body style="margin:0;padding:0;background-color:#f4f7fb;font-family:Arial,sans-serif;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f7fb;padding:40px 0;">
+          <tr>
+            <td align="center">
+              <table width="560" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                
+                <!-- Header -->
+                <tr>
+                  <td style="background-color:#1e3a8a;padding:32px 40px;text-align:center;">
+                    <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
+                      Vitthal Waterproofing
+                    </h1>
+                  </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                  <td style="padding:40px 40px 32px;">
+                    <p style="margin:0 0 8px;color:#374151;font-size:15px;">Hi ${customerName},</p>
+                    <p style="margin:0 0 28px;color:#6b7280;font-size:14px;line-height:1.6;">
+                      Thank you for trusting us with your recent project: <strong>${projectName}</strong>. 
+                      We strive to provide the best waterproofing services and your feedback is incredibly valuable to us!
+                    </p>
+                    <p style="margin:0 0 28px;color:#6b7280;font-size:14px;line-height:1.6;">
+                      Could you take exactly 60 seconds to leave us a quick review? It helps us grow and helps others find reliable service.
+                    </p>
+
+                    <!-- CTA Button -->
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="center">
+                          <a href="${reviewLink}" style="display:inline-block;background-color:#2563eb;color:#ffffff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;">
+                            Leave a Review
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                  <td style="background-color:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb;text-align:center;">
+                    <p style="margin:0;color:#9ca3af;font-size:12px;">
+                      © ${year} Vitthal Waterproofing Agency
+                    </p>
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `,
+  };
+};

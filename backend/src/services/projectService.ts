@@ -7,6 +7,10 @@ export const getAllProjects = async (serviceType?: string) => {
     .sort({ completionDate: -1 });
 };
 
+export const getProjectByIdQuery = async (id: string) => {
+  return await Project.findById(id);
+};
+
 export const createProjectQuery = async (data: any) => {
   return await Project.create(data);
 };
