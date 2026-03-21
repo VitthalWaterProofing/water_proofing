@@ -7,12 +7,13 @@ interface Project {
   images: string[];
   serviceType: {
     title: string;
+    parentCategory?: string;
   };
 }
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [categories] = useState<string[]>(["All", "Terrace", "Bathroom", "Tank", "Commercial"]);
   const [active, setActive] = useState("All");
   const [loading, setLoading] = useState(true);
 
@@ -20,17 +21,7 @@ export default function Projects() {
     const fetchProjects = async () => {
       try {
         const response = await api.get('/projects');
-        const fetchedProjects = response.data;
-        setProjects(fetchedProjects);
-        
-        // Extract unique categories from serviceType.title
-        const uniqueCategories = new Set<string>();
-        fetchedProjects.forEach((p: Project) => {
-          if (p.serviceType && p.serviceType.title) {
-            uniqueCategories.add(p.serviceType.title);
-          }
-        });
-        setCategories(["All", ...Array.from(uniqueCategories)]);
+        setProjects(response.data);
       } catch (error) {
         console.error("Failed to fetch projects:", error);
       } finally {
@@ -40,18 +31,10 @@ export default function Projects() {
     fetchProjects();
   }, []);
 
-  const formatCategory = (title: string) => {
-    if (title === "All") return "All";
-    return title
-      .replace(' Waterproofing', '')
-      .replace(' Treatment', '')
-      .replace(' Leakage Repair', '');
-  };
-
   const filtered =
     active === "All"
       ? projects
-      : projects.filter((p) => p.serviceType?.title === active);
+      : projects.filter((p) => p.serviceType?.parentCategory === active);
 
   return (
     <section className="bg-[#f8fafc] py-20">
@@ -84,7 +67,7 @@ export default function Projects() {
                       : "bg-white text-gray-600 hover:bg-blue-50"
                     }`}
                 >
-                  {formatCategory(cat)}
+                  {cat}
                 </button>
               ))}
             </div>

@@ -5,6 +5,7 @@ export interface IService extends Document {
   description: string;
   shortDescription: string;
   coverImage: string;
+  parentCategory: "Terrace" | "Bathroom" | "Tank" | "Commercial" | "Other";
   benefits: string[];
   isActive: boolean;
 }
@@ -29,6 +30,11 @@ const ServiceSchema: Schema = new Schema(
     coverImage: {
       type: String, // URL to image hosting or local path
       default: 'no-photo.jpg',
+    },
+    parentCategory: {
+      type: String,
+      enum: ["Terrace", "Bathroom", "Tank", "Commercial", "Other"],
+      default: "Other",
     },
     benefits: {
       type: [String],

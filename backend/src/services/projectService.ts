@@ -3,7 +3,7 @@ import Project from '../models/Project';
 export const getAllProjects = async (serviceType?: string) => {
   const filter = serviceType ? { serviceType } : {};
   return await Project.find(filter)
-    .populate('serviceType', 'title')
+    .populate('serviceType', 'title parentCategory')
     .sort({ completionDate: -1 });
 };
 
