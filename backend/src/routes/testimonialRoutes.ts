@@ -11,10 +11,9 @@ import { protect, admin } from '../middlewares/authMiddleware';
 const router = express.Router();
 
 // Public routes
-router.route('/').get(getTestimonials);
+router.route('/').get(getTestimonials).post(createTestimonial);
 
 // Admin-protected routes
-router.route('/').post(protect, admin, createTestimonial);
 
 router.route('/admin').get(protect, admin, getAllTestimonials);
 

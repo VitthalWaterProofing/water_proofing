@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import * as projectService from '../services/projectService';
+import sendEmail from '../utils/sendEmail';
+import { reviewRequestTemplate } from '../utils/emailTemplates';
 
 // @desc    Get all portfolio projects
 // @route   GET /api/projects
@@ -57,3 +59,39 @@ export const deleteProject = async (req: Request, res: Response) => {
       }
     }
   };
+
+// @desc    Send review request email to customer
+// @route   POST /api/projects/:id/send-review-request
+// @access  Private/Admin
+export const sendReviewRequest = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email, customerName } = req.body;
+    if (!email || !customerName) {
+      res.status(400).json({ message: 'Email and customer name are required' });
+      return;
+    }
+
+    const project = await projectService.getProjectByIdQuery(req.params.id as string);
+    if (!project) {
+      res.status(404).json({ message: 'Project not found' });
+      return;
+    }
+
+    const frontendUrl = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() : 'http://localhost:5173';
+    // Append the project title as a query param so the form can pre-fill
+    const reviewLink = `${frontendUrl}/feedback?projectName=${encodeURIComponent(project.title)}&customerName=${encodeURIComponent(customerName)}`;
+
+    const template = reviewRequestTemplate(customerName, project.title, reviewLink);
+
+    await sendEmail({
+      email,
+      subject: template.subject,
+      message: 'Please leave a review',
+      html: template.html,
+    });
+
+    res.status(200).json({ message: 'Review request sent successfully' });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message || 'Server Error sending review request' });
+  }
+};

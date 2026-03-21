@@ -27,10 +27,15 @@ export const getAllTestimonials = async (req: Request, res: Response) => {
 
 // @desc    Create a new testimonial
 // @route   POST /api/testimonials
-// @access  Private/Admin
+// @access  Public (Clients submitting reviews)
 export const createTestimonial = async (req: Request, res: Response) => {
   try {
-    const testimonial = await testimonialService.createTestimonialQuery(req.body);
+    // Prevent malicious users from setting their own review as approved
+    const payload = {
+      ...req.body,
+      isApproved: false
+    };
+    const testimonial = await testimonialService.createTestimonialQuery(payload);
     res.status(201).json(testimonial);
   } catch (error: any) {
     res.status(400).json({ message: error.message || 'Invalid testimonial data' });

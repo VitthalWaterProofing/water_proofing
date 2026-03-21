@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import ProjectsPage from "./pages/ProjectsPage";
+import FeedbackPage from "./pages/FeedbackPage";
 
 // Admin Component Imports
 import Login from "./pages/admin/Login";
@@ -68,6 +69,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
         </Route>
 
         {/* Admin Public Route (Login) */}

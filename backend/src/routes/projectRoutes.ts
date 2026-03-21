@@ -4,6 +4,7 @@ import {
   createProject,
   updateProject,
   deleteProject,
+  sendReviewRequest,
 } from '../controllers/projectController';
 import { protect, admin } from '../middlewares/authMiddleware';
 
@@ -16,5 +17,7 @@ router.route('/')
 router.route('/:id')
   .put(protect, admin, updateProject)
   .delete(protect, admin, deleteProject);
+
+router.route('/:id/send-review-request').post(protect, admin, sendReviewRequest);
 
 export default router;

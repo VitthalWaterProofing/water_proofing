@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { Plus, Edit2, Trash2, Image as ImageIcon, MapPin } from 'lucide-react';
+import { Plus, Edit2, Trash2, Image as ImageIcon, MapPin, Mail } from 'lucide-react';
 
 interface ServiceType {
   _id: string;
@@ -40,6 +40,13 @@ const ProjectsManagement = () => {
   // although the model supports an array.
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+
+  // Review Request state
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [reviewProject, setReviewProject] = useState<Project | null>(null);
+  const [reviewEmail, setReviewEmail] = useState('');
+  const [reviewCustomerName, setReviewCustomerName] = useState('');
+  const [sendingReview, setSendingReview] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -99,6 +106,32 @@ const ProjectsManagement = () => {
       } catch {
         alert('Failed to delete project');
       }
+    }
+  };
+
+  const openReviewModal = (project: Project) => {
+    setReviewProject(project);
+    setReviewEmail('');
+    setReviewCustomerName('');
+    setIsReviewModalOpen(true);
+  };
+
+  const handleSendReviewRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reviewProject) return;
+    
+    try {
+      setSendingReview(true);
+      await api.post(`/projects/${reviewProject._id}/send-review-request`, {
+        email: reviewEmail,
+        customerName: reviewCustomerName
+      });
+      setIsReviewModalOpen(false);
+      alert('Review request sent successfully!');
+    } catch {
+      alert('Failed to send review request. Please check the email server configuration.');
+    } finally {
+      setSendingReview(false);
     }
   };
 
@@ -205,19 +238,27 @@ const ProjectsManagement = () => {
               
               <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-50">
                 <button 
-                  onClick={() => openEditModal(project)}
-                  className="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                  onClick={() => openReviewModal(project)}
+                  className="flex items-center gap-1 text-sm font-medium text-green-600 hover:text-green-800 transition-colors"
+                  title="Request Review via Email"
                 >
-                  <Edit2 size={16} />
-                  Edit
+                  <Mail size={16} />
+                  Request Review
                 </button>
-                <button 
-                  onClick={() => handleDelete(project._id)}
-                  className="flex items-center gap-1.5 text-sm font-medium text-red-600 hover:text-red-800 transition-colors"
-                >
-                  <Trash2 size={16} />
-                  Delete
-                </button>
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={() => openEditModal(project)}
+                    className="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    <Edit2 size={16} />
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(project._id)}
+                    className="flex items-center gap-1.5 text-sm font-medium text-red-600 hover:text-red-800 transition-colors"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -343,6 +384,63 @@ const ProjectsManagement = () => {
                 className="px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700 flex items-center"
               >
                 {uploadingImage ? 'Uploading Image...' : (editingProject ? 'Save Changes' : 'Publish Project')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Review Request Modal */}
+      {isReviewModalOpen && reviewProject && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-md w-full flex flex-col shadow-2xl">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+              <h3 className="text-xl font-bold text-gray-900">
+                Request a Review
+              </h3>
+              <button onClick={() => setIsReviewModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+                &times;
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <p className="text-sm text-gray-600 mb-4">
+                Send an email to the client asking them to review <strong>{reviewProject.title}</strong>.
+              </p>
+              <form id="reviewForm" onSubmit={handleSendReviewRequest} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
+                  <input 
+                    type="text" required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                    value={reviewCustomerName}
+                    onChange={e => setReviewCustomerName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Customer Email</label>
+                  <input 
+                    type="email" required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                    value={reviewEmail}
+                    onChange={e => setReviewEmail(e.target.value)}
+                  />
+                </div>
+              </form>
+            </div>
+            
+            <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-xl flex justify-end gap-3">
+              <button 
+                type="button" onClick={() => setIsReviewModalOpen(false)}
+                className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button 
+                type="submit" form="reviewForm" disabled={sendingReview}
+                className="px-4 py-2 bg-green-600 rounded-lg text-sm font-medium text-white hover:bg-green-700 flex items-center"
+              >
+                {sendingReview ? 'Sending...' : 'Send Request'}
               </button>
             </div>
           </div>
