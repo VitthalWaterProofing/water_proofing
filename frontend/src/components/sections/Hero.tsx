@@ -1,6 +1,6 @@
 import { Phone } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
 
+import { FiSend } from "react-icons/fi";
 
 export default function Hero() {
   return (
@@ -57,7 +57,7 @@ export default function Hero() {
               className="w-full sm:w-auto"
             >
               <button className="min-w-[220px] flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#1e3a6d] transition">
-                <FaWhatsapp size={18} />
+                <FiSend/>
                 Send Enquiry
               </button>
             </a>
