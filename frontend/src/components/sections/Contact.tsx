@@ -254,9 +254,7 @@ export default function Contact() {
         </div>
 
       </Container>
-      <FloatingActions
-        formData={formData}
-      />
+      <FloatingActions/>
     </section>
   );
 }
