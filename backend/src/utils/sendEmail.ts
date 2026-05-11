@@ -20,7 +20,7 @@ const sendEmail = async (options: EmailOptions) => {
   });
 
   const message = {
-    from: `${process.env.FROM_NAME || 'WaterProofing Agency'} <${process.env.FROM_EMAIL || 'noreply@waterproofing.com'}>`,
+    from: `${process.env.FROM_NAME || 'Vitthal Waterproofing '} <${process.env.FROM_EMAIL || 'noreply@waterproofing.com'}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,

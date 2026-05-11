@@ -77,7 +77,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">Our Story</h2>
 
-              <p className="text-gray-600 mb-4 text-sm md:text-base">Established over <b className="text-black">10 years ago</b>, Pandarinath Vitthal Waterproofing Agency has grown from a small local operation to one of the most trusted names in waterproofing across Bangalore. </p>
+              <p className="text-gray-600 mb-4 text-sm md:text-base">Established over <b className="text-black">10 years ago</b>, Vitthal Waterproofing has grown from a small local operation to one of the most trusted names in waterproofing across Bangalore. </p>
 
               <p className="text-gray-600 mb-4 text-sm md:text-base">With <b className="text-black">hundreds of satisfied clients</b> and projects ranging from residential homes to large commercial buildings, we bring unmatched expertise to every job.</p>
 
@@ -156,7 +156,7 @@ export default function AboutPage() {
               </h3>
 
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
-                Become the most trusted and recommended waterproofing agency in the region,
+                Become the most trusted and recommended waterproofing solutions provider in the region,
                 known for reliability, innovation, and customer satisfaction.
               </p>
             </div>

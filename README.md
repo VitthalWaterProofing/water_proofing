@@ -1,6 +1,6 @@
-# WaterProofing Agency Backend
+# WaterProofing Website Backend
 
-This is the backend for the WaterProofing Agency, built with Node.js, Express, TypeScript, and MongoDB.
+This is the backend for Vitthal WaterProofing, built with Node.js, Express, TypeScript, and MongoDB.
 
 ## Getting Started
 

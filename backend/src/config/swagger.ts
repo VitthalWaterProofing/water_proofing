@@ -6,9 +6,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'WaterProofing Agency API',
+      title: 'WaterProofing Website API',
       version: '1.0.0',
-      description: 'API documentation for the WaterProofing Agency backend.',
+      description: 'API documentation for the WaterProofing website backend.',
     },
     servers: [
       {

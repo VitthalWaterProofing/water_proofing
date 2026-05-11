@@ -19,9 +19,9 @@ export default function Footer() {
                 />
               </div>
               <div>
-                <h3 className="font-semibold">Pandarinath Vitthal</h3>
+                <h3 className="font-semibold">Vitthal Waterproofing</h3>
                 <p className="text-sm text-[#3999da]">
-                  Waterproofing Agency
+                  Waterproofing Solutions
                 </p>
               </div>
             </div>
@@ -70,7 +70,7 @@ export default function Footer() {
 
         {/* Bottom Line */}
         <div className="border-t border-blue-800 pt-6 text-center text-sm text-blue-300">
-          © 2026 Pandarinath Vitthal Waterproofing Agency. All rights reserved.
+          © 2026 Vitthal Waterproofing. All rights reserved.
         </div>
 
       </Container>

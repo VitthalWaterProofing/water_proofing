@@ -16,7 +16,7 @@ export const otpEmailTemplate = (otp: number) => {
                 <tr>
                   <td style="background-color:#1e3a8a;padding:32px 40px;text-align:center;">
                     <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">
-                      Vitthal Waterproofing Agency
+                      Vitthal Waterproofing 
                     </h1>
                     <p style="margin:6px 0 0;color:#93c5fd;font-size:13px;">Admin Portal Security Verification</p>
                   </td>
@@ -60,7 +60,7 @@ export const otpEmailTemplate = (otp: number) => {
                 <tr>
                   <td style="background-color:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb;text-align:center;">
                     <p style="margin:0;color:#9ca3af;font-size:12px;">
-                      © ${year} Vitthal Waterproofing Agency · This is an automated security email.
+                      © ${year} Vitthal Waterproofing · This is an automated security email.
                     </p>
                   </td>
                 </tr>
@@ -127,7 +127,7 @@ export const reviewRequestTemplate = (customerName: string, projectName: string,
                 <tr>
                   <td style="background-color:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb;text-align:center;">
                     <p style="margin:0;color:#9ca3af;font-size:12px;">
-                      © ${year} Vitthal Waterproofing Agency
+                      © ${year} Vitthal Waterproofing
                     </p>
                   </td>
                 </tr>

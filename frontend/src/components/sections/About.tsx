@@ -35,7 +35,7 @@ export default function About() {
 
             {/* Paragraph */}
             <p className="text-gray-600 leading-relaxed mb-8">
-              Pandarinath Vitthal Waterproofing Agency has been delivering
+              Vitthal Waterproofing has been delivering
               premium waterproofing solutions for over a decade. We specialize
               in residential and commercial projects, using only the highest
               quality materials and skilled professionals to ensure lasting

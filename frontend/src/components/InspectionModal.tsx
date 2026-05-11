@@ -84,7 +84,7 @@ Details: ${details}`;
 
           <img
             src="/logo.png"
-            alt="Pandarinath Vitthal"
+            alt="Vitthal Waterproofing"
             className="w-9 h-9 object-contain mt-1 shrink-0"
           />
 

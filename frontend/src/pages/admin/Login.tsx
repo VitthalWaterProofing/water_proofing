@@ -57,7 +57,7 @@ const Login = () => {
             Admin Login
           </h2>
           <p className="mt-2 text-sm text-gray-500">
-            Waterproofing Agency Content Management
+            Waterproofing Solutions Content Management
           </p>
         </div>
         

@@ -224,7 +224,7 @@ export default function Contact() {
               </h3>
               <p className="text-sm text-gray-600">
 
-                Pandarinath Vitthal Waterproofing Agency<br />
+                Vitthal Waterproofing<br />
                 Bangalore, India
               </p>
             </div>

@@ -40,11 +40,8 @@ export default function Navbar() {
           </div>
           <div className="leading-tight">
             <h1 className="text-sm sm:text-base lg:text-lg font-semibold">
-              Pandarinath Vitthal
+              Vitthal Waterproofing
             </h1>
-            <p className="text-[10px] sm:text-xs text-[#3999da]">
-              Waterproofing Agency
-            </p>
           </div>
         </Link>
 
