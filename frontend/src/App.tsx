@@ -9,6 +9,7 @@ import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import FeedbackPage from "./pages/FeedbackPage";
+import ReferEarnPage from "./pages/ReferEarnPage";
 
 // Admin Component Imports
 import Login from "./pages/admin/Login";
@@ -70,6 +71,7 @@ function App() {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/refer-and-earn" element={<ReferEarnPage />} />
         </Route>
 
         {/* Admin Public Route (Login) */}

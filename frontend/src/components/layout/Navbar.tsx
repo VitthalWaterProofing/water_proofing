@@ -8,6 +8,7 @@ const navLinks = [
   { name: "Services", path: "/services" },
   { name: "Why Us", path: "/#whyus" },
   { name: "Projects", path: "/projects" },
+  { name: "Refer & Earn", path: "/refer-and-earn" },
   { name: "Testimonials", path: "/#testimonials" }, // temporary
   { name: "Contact", path: "/#contact" },
 ];
@@ -20,6 +21,11 @@ export default function Navbar() {
     const current = location.pathname + location.hash;
 
     const isActive = path === "/" ? location.pathname === "/" && location.hash === "" : current === path;
+
+    if (path === "/refer-and-earn") {
+      return `px-3 py-1 rounded-full font-semibold transition-colors duration-200 ${isActive ? "bg-amber-300 text-[#0f2d5c]" : "bg-amber-400 text-[#0f2d5c] hover:bg-amber-300"
+        }`;
+    }
 
     return `transition-colors duration-200 ${isActive ? "text-blue-300 font-semibold" : "hover:text-blue-300"
       }`;
