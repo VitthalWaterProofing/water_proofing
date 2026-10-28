@@ -88,7 +88,7 @@ export default function ProjectsPage() {
             <div className="flex flex-col gap-4 sm:hidden">
 
               <a
-                href="https://wa.me/919867233817?text=Hello%2C%0A%0AI%20would%20like%20to%20enquire%20about%20waterproofing%20services.%0A%0AName%3A%0ALocation%3A%0AProblem%20Type%3A%0APreferred%20Inspection%20Date%3A%0A%0ALooking%20forward%20to%20your%20response."
+                href="https://wa.me/917478027079?text=Hello%2C%0A%0AI%20would%20like%20to%20enquire%20about%20waterproofing%20services.%0A%0AName%3A%0ALocation%3A%0AProblem%20Type%3A%0APreferred%20Inspection%20Date%3A%0A%0ALooking%20forward%20to%20your%20response."
                 target="_blank"
                 className="w-full sm:w-auto"
               >
@@ -97,10 +97,10 @@ export default function ProjectsPage() {
                 </button>
               </a>
 
-              <a href="tel:+919867233817">
+              <a href="tel:+917478027079">
                 <button className="flex items-center justify-center gap-2 border border-[#1d1d81] px-6 py-3 rounded-lg shadow hover:bg-gray-100 transition w-[230px]">
                   <Phone size={16} />
-                  Call +91 98672 33817
+                  Call +91 74780 27079
                 </button>
               </a>
 
@@ -110,7 +110,7 @@ export default function ProjectsPage() {
             {/* DESKTOP BUTTONS */}
             <div className="hidden sm:flex gap-4">
 
-              <a href="tel:+919867233817">
+              <a href="tel:+917478027079">
                 <button className="flex items-center justify-center gap-2 bg-[#1a1a83] text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
                   <Phone size={16} />
                   Get Free Inspection
@@ -118,7 +118,7 @@ export default function ProjectsPage() {
               </a>
 
               <a
-                href="tel:+919867233817">
+                href="tel:+917478027079">
                 <button className="flex items-center justify-center gap-2 border border-[#1d1d81] px-6 py-3 rounded-lg shadow hover:bg-gray-100 transition">
                   <FaWhatsapp size={18} />
                   WhatsApp Now

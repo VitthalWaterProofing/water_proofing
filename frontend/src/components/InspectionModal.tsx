@@ -56,7 +56,7 @@ Problem: ${problem}
 Preferred Date: ${date}
 Details: ${details}`;
 
-    const whatsappUrl = `https://wa.me/919867233817?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/917478027079?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
   };
@@ -216,7 +216,7 @@ Details: ${details}`;
 
 
           {/* Call Button */}
-          <a href="tel:+919867233817" className="block">
+          <a href="tel:+917478027079" className="block">
             <button className="w-full border border-gray-300 py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-gray-50 transition">
               <Phone size={16} />
               Call Now

@@ -64,7 +64,7 @@ export default function Navbar() {
           ))}
 
           <a
-            href="tel:+919867233817"
+            href="tel:+917478027079"
             className="flex items-center gap-2 bg-[#133267] hover:bg-[#29294e] px-4 lg:px-5 py-2 rounded-full text-sm transition"
           >
             <Phone size={16} />
@@ -100,7 +100,7 @@ export default function Navbar() {
             ))}
 
             <a
-              href="tel:+919867233817"
+              href="tel:+917478027079"
               className="flex items-center gap-2 bg-[#133267] hover:bg-[#29294e] px-5 py-2 rounded-full transition"
             >
               <Phone size={16} />

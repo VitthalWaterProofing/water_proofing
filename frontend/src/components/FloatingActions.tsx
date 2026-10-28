@@ -75,7 +75,7 @@ export default function FloatingActions({ hide }: Props) {
       `Problem: ${problem}`,
     ].join("\n");
 
-    const url = `https://wa.me/919867233817?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/917478027079?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
 
     setIsWhatsappFormOpen(false);
@@ -91,7 +91,7 @@ export default function FloatingActions({ hide }: Props) {
     <>
       {/* Phone button */}
       <a
-        href="tel:+919867233817"
+        href="tel:+917478027079"
         className="sm:hidden fixed bottom-6 left-6 bg-[#1e3a6d] hover:bg-[#16305c] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition z-50"
       >
         <Phone size={20} />

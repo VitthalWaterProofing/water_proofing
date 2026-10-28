@@ -125,14 +125,14 @@ export default function ServicesPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-4 sm:flex-row">
-                  <a href="tel:+919867233817" className="w-full sm:w-auto">
+                  <a href="tel:+917478027079" className="w-full sm:w-auto">
                     <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
                       <Phone size={17} />
                       Get Free Inspection
                     </button>
                   </a>
 
-                  <a href="https://wa.me/9867233817" className="w-full sm:w-auto">
+                  <a href="https://wa.me/917478027079" className="w-full sm:w-auto">
                     <button className="min-w-[200px] w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/40 hover:border-white px-6 py-3 rounded-lg font-semibold text-sm transition duration-300">
                       <FaWhatsapp size={18} />
                       WhatsApp Now

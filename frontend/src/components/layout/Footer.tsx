@@ -80,7 +80,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-blue-200">
               <li>
                 <Phone className="inline mr-2" size={15} />
-                +91 98672 33817
+                +91 74780 27079
               </li>
               <li>
                 <MailIcon className="inline mr-2" size={15} />

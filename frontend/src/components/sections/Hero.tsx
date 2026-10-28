@@ -46,7 +46,7 @@ export default function Hero() {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
 
-            <a href="tel:+919867233817" className="w-full sm:w-auto">
+            <a href="tel:+917478027079" className="w-full sm:w-auto">
               <button className="min-w-[220px] flex items-center justify-center gap-2 bg-[#1443a8] hover:bg-[#1d4ed8] px-6 py-3 rounded-lg font-semibold transition">
                 <Phone size={16} /> Get Free Inspection
               </button>

@@ -234,8 +234,8 @@ export default function Contact() {
                 <Phone className="inline mr-2" size={17} />Contact Info
               </h3>
               <p className="text-sm text-gray-600">
-                Phone: +91 98672 33817<br />
-                WhatsApp: +91 98672 33817
+                Phone: +91 74780 27079<br />
+                WhatsApp: +91 74780 27079
               </p>
             </div>
 
