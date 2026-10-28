@@ -11,33 +11,35 @@ import FloatingActions from "../components/FloatingActions";
 import api from "../services/api";
 
 const SITE_URL = "https://vitthalwaterproofing.com";
-const PHONE = "+919867233817";
-const PHONE_DISPLAY = "+91 98672 33817";
+const PHONE = "+917478027079";
+const PHONE_DISPLAY = "+91 74780 27079";
 
 const shareMessage = `Facing leakage, seepage or damp walls? I recommend Vitthal Waterproofing for terrace, bathroom and building waterproofing. ${SITE_URL}`;
 
 type Reward = {
   name: string;
-  price: number;
-  mrp?: number;
   icon: LucideIcon;
+  image?: string;
+  // Photos (not product shots) fill the frame instead of being contained
+  cover?: boolean;
+  // Banner art on a black background: shown whole, letterboxed in black
+  dark?: boolean;
+  badge?: string;
 };
 
 const rewards: Reward[] = [
-  { name: "Holiday Trip To Maldives", price: 150000, icon: Plane },
-  { name: "Samsung Galaxy S26 Phone", price: 124000, icon: Smartphone },
-  { name: "Haier Vogue Series 598 L Fridge (Double Door)", price: 89990, icon: Refrigerator },
-  { name: "LED TV", price: 60000, icon: Tv },
-  { name: "Bosch 13 Place Settings Dishwasher", price: 50490, mrp: 58990, icon: Utensils },
-  { name: "Samsung Washing Machine Bespoke AI", price: 38500, mrp: 50990, icon: WashingMachine },
-  { name: "Carrier 1.5 Ton 3 Star Flexicool Inverter Split Air Conditioner", price: 35990, mrp: 65500, icon: AirVent },
-  { name: "Dell Business Laptop 3410 i5 10th Gen 8 GB RAM & 512 GB SSD", price: 34990, mrp: 89990, icon: Laptop },
-  { name: "Prestige Endura Mixer Grinder", price: 8390, mrp: 10435, icon: CookingPot },
-  { name: "Noise Earpods", price: 5499, icon: Headphones },
-  { name: "Morphy Richards Sandwich Maker 2in1 750 Watt", price: 3200, mrp: 5795, icon: Sandwich },
+  { name: "Holiday Trip To Maldives", icon: Plane, image: "/rewards/maldives-trip.webp", cover: true, badge: "Top Reward" },
+  { name: "Samsung Galaxy S26 Ultra Phone", icon: Smartphone, image: "/rewards/samsung-galaxy-s26.webp" },
+  { name: "Haier Vogue Series 598 L Fridge (Double Door)", icon: Refrigerator, image: "/rewards/haier-fridge-598l.webp" },
+  { name: "LED TV", icon: Tv, image: "/rewards/led-tv.webp" },
+  { name: "Bosch 13 Place Settings Dishwasher", icon: Utensils, image: "/rewards/bosch-dishwasher.webp" },
+  { name: "Samsung Washing Machine Bespoke AI", icon: WashingMachine, image: "/rewards/samsung-washing-machine.webp", dark: true },
+  { name: "Carrier 1.5 Ton 3 Star Flexicool Inverter Split Air Conditioner", icon: AirVent, image: "/rewards/carrier-ac-1-5-ton.webp" },
+  { name: "Dell Business Laptop 3410 i5 10th Gen 8 GB RAM & 512 GB SSD", icon: Laptop, image: "/rewards/dell-laptop-3410.webp" },
+  { name: "Prestige Endura Mixer Grinder", icon: CookingPot, image: "/rewards/prestige-mixer-grinder.webp" },
+  { name: "Noise Earpods", icon: Headphones, image: "/rewards/noise-earpods.webp" },
+  { name: "Morphy Richards Sandwich Maker 2in1 750 Watt", icon: Sandwich, image: "/rewards/morphy-richards-sandwich-maker.webp" },
 ];
-
-const formatINR = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 const steps = [
   { icon: Share2, title: "Refer a customer", text: "Share our website or fill the referral form for someone who needs waterproofing." },
@@ -187,13 +189,17 @@ export default function ReferEarnPage() {
     <>
       <div className="pt-16">
         {/* 1. Hero */}
-        <section className="relative overflow-hidden bg-[#1e3a6d] text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1e3a6d] via-[#173163] to-[#0f2d5c]"></div>
-          <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-blue-500/10"></div>
-          <div className="absolute -left-20 bottom-0 w-72 h-72 rounded-full bg-blue-400/10"></div>
+        <section className="relative overflow-hidden bg-[#0f2d5c] text-white">
+          <div
+            className="absolute inset-0 bg-cover bg-[70%_center] bg-no-repeat lg:bg-[length:auto_100%] lg:bg-right"
+            style={{ backgroundImage: "url('/refer-earn-hero.webp')" }}
+            aria-hidden="true"
+          ></div>
+          {/* Darken the left side so the text stays readable over the image */}
+          <div className="absolute inset-0 bg-[#0f2d5c]/80 lg:bg-transparent lg:bg-gradient-to-r lg:from-[#0f2d5c] lg:via-[#0f2d5c]/80 lg:to-transparent"></div>
 
-          <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-12 items-center">
-            <div>
+          <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-24 lg:min-h-[560px] flex items-center">
+            <div className="max-w-xl">
               <span className="inline-flex items-center gap-2 bg-amber-400/15 text-amber-300 border border-amber-400/40 rounded-full px-4 py-1.5 text-sm font-semibold">
                 <Gift size={16} /> Refer Karo, Reward Pao
               </span>
@@ -203,7 +209,7 @@ export default function ReferEarnPage() {
                 <span className="text-amber-300">Win Exciting Rewards!</span>
               </h1>
 
-              <p className="mt-5 text-base md:text-lg text-blue-100 max-w-xl">
+              <p className="mt-5 text-base md:text-lg text-blue-100">
                 Know someone dealing with leakage, seepage, damp walls, terrace or bathroom leakage?
                 Refer them to us and get rewarded when their waterproofing work is successfully completed.
               </p>
@@ -222,38 +228,13 @@ export default function ReferEarnPage() {
                   View Rewards
                 </a>
               </div>
-            </div>
 
-            {/* Featured rewards card */}
-            <div className="bg-white text-[#0f172a] rounded-2xl shadow-2xl p-6 md:p-7">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
-                    <img src="/logo.png" alt="Vitthal Waterproofing logo" className="w-full h-full object-cover scale-150" />
-                  </div>
-                  <div className="leading-tight">
-                    <p className="font-semibold">Top Rewards</p>
-                    <p className="text-xs text-gray-500">Vitthal Refer & Earn</p>
-                  </div>
-                </div>
-                <Trophy className="text-amber-500" size={26} />
+              <div className="mt-8 flex items-center gap-3 text-sm text-blue-100">
+                <Trophy className="text-amber-300 shrink-0" size={22} />
+                <span>
+                  <span className="font-bold text-amber-300">{rewards.length} exciting rewards</span> to win
+                </span>
               </div>
-
-              <div className="space-y-3">
-                {rewards.slice(0, 4).map((r) => (
-                  <div key={r.name} className="flex items-center gap-4 bg-[#f3f6fc] rounded-xl p-3">
-                    <div className="w-11 h-11 shrink-0 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
-                      <r.icon size={22} />
-                    </div>
-                    <p className="flex-1 min-w-0 text-sm font-medium truncate">{r.name}</p>
-                    <p className="text-sm font-bold text-[#1e3a6d] whitespace-nowrap">{formatINR(r.price)}</p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="mt-5 text-xs text-gray-500 text-center">
-                + {rewards.length - 4} more rewards. Reward depends on the completed project.
-              </p>
             </div>
           </div>
         </section>
@@ -305,23 +286,46 @@ export default function ReferEarnPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Flex-wrap (not grid) so a short last row is centered */}
+            <div className="flex flex-wrap justify-center gap-4 lg:gap-6">
               {rewards.map((r) => (
                 <div
                   key={r.name}
-                  className="flex flex-col p-6 rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
+                  className="group relative flex flex-col w-full sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-16px)] rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden transition hover:-translate-y-1 hover:shadow-lg"
                 >
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 bg-blue-100 text-blue-600">
-                    <r.icon size={26} />
+                  {r.badge && (
+                    <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 bg-amber-400 text-[#0f2d5c] text-xs font-semibold px-3 py-1 rounded-full shadow">
+                      <Trophy size={14} /> {r.badge}
+                    </span>
+                  )}
+
+                  <div className={`aspect-[4/3] border-b border-gray-100 overflow-hidden ${r.dark ? "bg-black" : "bg-white"}`}>
+                    {r.image ? (
+                      <img
+                        src={r.image}
+                        alt={r.name}
+                        width={800}
+                        height={600}
+                        loading="lazy"
+                        decoding="async"
+                        className={`w-full h-full transition-transform duration-300 group-hover:scale-[1.03] ${
+                          r.cover ? "object-cover" : r.dark ? "object-contain" : "object-contain p-6"
+                        }`}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-[#f3f6fc] text-blue-300">
+                        <r.icon size={56} strokeWidth={1.5} />
+                      </div>
+                    )}
                   </div>
 
-                  <h3 className="font-semibold leading-snug mb-4 text-[#0f172a]">{r.name}</h3>
-
-                  <div className="mt-auto flex items-baseline gap-3">
-                    <span className="text-2xl font-bold text-[#1e3a6d]">{formatINR(r.price)}</span>
-                    {r.mrp && (
-                      <span className="text-sm text-gray-400 line-through">{formatINR(r.mrp)}</span>
-                    )}
+                  <div className="flex flex-col flex-1 p-5">
+                    <h3
+                      title={r.name}
+                      className="font-semibold leading-snug text-[#0f172a] line-clamp-2 min-h-[2.75rem]"
+                    >
+                      {r.name}
+                    </h3>
                   </div>
                 </div>
               ))}
