@@ -9,7 +9,7 @@ connectDB();
 
 const seedData = async () => {
   try {
-    const adminExists = await User.findOne({ email: 'ashishsingh4895@gmail.com' });
+    const adminExists = await User.findOne({ email: 'waterproofingpandu@gmail.com' });
 
     if (adminExists) {
         console.log('Super Admin already exists!');
@@ -18,8 +18,8 @@ const seedData = async () => {
 
     const createdAdmin = await User.create({
       name: 'Super Admin',
-      email: 'ashishsingh4895@gmail.com',
-      password: 'Ashish@123', // The User model will hash this automatically
+      email: 'waterproofingpandu@gmail.com',
+      password: 'vormirex@2026', // The User model will hash this automatically
       role: 'super_admin'
     });
 
